@@ -395,6 +395,50 @@ input, select, textarea {
 			width: 66.66667%;
 		}
 
+/* Interactive additions */
+
+#projects-placeholder {
+	font-size: 1.05em;
+	opacity: 0.9;
+}
+
+.work-item {
+	transition: transform 300ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms ease, background-color 300ms ease;
+	will-change: transform;
+	background: rgba(255,255,255,0.02);
+	padding: 18px;
+	border-radius: 8px;
+}
+
+.work-item:hover {
+	transform: translateY(-6px) scale(1.01);
+	box-shadow: 0 20px 40px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.08);
+	background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
+}
+
+/* Cursor follower */
+.cursor-follower {
+	position: fixed;
+	pointer-events: none;
+	width: 120px;
+	height: 120px;
+	margin-left: -60px;
+	margin-top: -60px;
+	border-radius: 50%;
+	background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), rgba(255,255,255,0.02) 40%, rgba(0,0,0,0) 60%);
+	mix-blend-mode: screen;
+	transform: translate3d(0,0,0) scale(0.6);
+	transition: transform 200ms ease, opacity 200ms ease;
+	opacity: 0.85;
+	z-index: 10000;
+}
+
+body.is-touch .cursor-follower { display: none; }
+
+/* Make buttons more obvious when active */
+.button.primary { box-shadow: 0 6px 18px rgba(73,191,157,0.12); }
+
+
 		.row > .off-8 {
 			margin-left: 66.66667%;
 		}

@@ -117,23 +117,76 @@
 })(jQuery);
 
 document.addEventListener('DOMContentLoaded', function() {
-    var codingBtn = document.getElementById('show-coding');
-    var drawingBtn = document.getElementById('show-drawing');
-    var codingProjects = document.getElementById('coding-projects');
-    var drawingProjects = document.getElementById('drawing-projects');
+	var codingBtn = document.getElementById('show-coding');
+	var drawingBtn = document.getElementById('show-drawing');
+	var codingProjects = document.getElementById('coding-projects');
+	var drawingProjects = document.getElementById('drawing-projects');
+	var placeholder = document.getElementById('projects-placeholder');
 
-    if (codingBtn && drawingBtn && codingProjects && drawingProjects) {
-        codingBtn.onclick = function() {
-            codingProjects.style.display = 'block';
-            drawingProjects.style.display = 'none';
-            codingBtn.classList.add('primary');
-            drawingBtn.classList.remove('primary');
-        };
-        drawingBtn.onclick = function() {
-            codingProjects.style.display = 'none';
-            drawingProjects.style.display = 'block';
-            drawingBtn.classList.add('primary');
-            codingBtn.classList.remove('primary');
-        };
-    }
+	function showNone() {
+		if (codingProjects) codingProjects.style.display = 'none';
+		if (drawingProjects) drawingProjects.style.display = 'none';
+		if (placeholder) placeholder.style.display = 'block';
+	}
+
+	function showCoding() {
+		if (codingProjects) codingProjects.style.display = 'block';
+		if (drawingProjects) drawingProjects.style.display = 'none';
+		if (placeholder) placeholder.style.display = 'none';
+		codingBtn.classList.add('primary');
+		drawingBtn.classList.remove('primary');
+	}
+
+	function showDrawing() {
+		if (codingProjects) codingProjects.style.display = 'none';
+		if (drawingProjects) drawingProjects.style.display = 'block';
+		if (placeholder) placeholder.style.display = 'none';
+		drawingBtn.classList.add('primary');
+		codingBtn.classList.remove('primary');
+	}
+
+	if (codingBtn && drawingBtn && codingProjects && drawingProjects) {
+		// start with none visible
+		showNone();
+
+		codingBtn.addEventListener('click', showCoding);
+		drawingBtn.addEventListener('click', showDrawing);
+	}
+
+	// Cursor follower (subtle)
+	if (!('ontouchstart' in window)) {
+		var follower = document.createElement('div');
+		follower.className = 'cursor-follower';
+		document.body.appendChild(follower);
+
+		var mouseX = 0, mouseY = 0, posX = 0, posY = 0;
+
+		window.addEventListener('mousemove', function(e) {
+			mouseX = e.clientX;
+			mouseY = e.clientY;
+			follower.style.left = mouseX + 'px';
+			follower.style.top = mouseY + 'px';
+		});
+
+		// Reduce movement lag for smoother effect
+		(function animate() {
+			posX += (mouseX - posX) * 0.18;
+			posY += (mouseY - posY) * 0.18;
+			follower.style.transform = 'translate3d(' + (posX - mouseX) + 'px,' + (posY - mouseY) + 'px,0) scale(1)';
+			requestAnimationFrame(animate);
+		})();
+
+		// Interactions - grow when hovering work items
+		document.querySelectorAll('.work-item').forEach(function(el) {
+			el.addEventListener('mouseenter', function() {
+				follower.style.transform += ' scale(1.25)';
+				follower.style.opacity = '1';
+			});
+			el.addEventListener('mouseleave', function() {
+				follower.style.transform = follower.style.transform.replace(' scale(1.25)','');
+				follower.style.opacity = '0.85';
+			});
+		});
+	}
+
 });
