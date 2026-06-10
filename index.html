@@ -10,11 +10,20 @@
         <style>
             #changing-word {
                 opacity: 0.6; /* Make the text a bit transparent */
-                transition: color 0.3s, opacity 0.3s; /* Smooth transition */
+                transition: color 10s ease-in-out, opacity 10s ease-in-out; /* 4-second smooth transition */
             }
             #changing-word:hover {
                 color: white; /* Change to white on hover */
                 opacity: 1; /* Fully opaque on hover */
+            }
+            .subtitle {
+                color: rgba(255, 255, 255, 0.5);
+                font-size: 0.9em;
+                margin-top: 0.5em;
+            }
+            .year {
+                font-weight: 700;
+                opacity: 0.8;
             }
         </style>
     </head>
@@ -22,12 +31,12 @@
 
         <!-- Header -->
 			<header id="header">
-				<div class="inner header-inner">
-					<a href="#" class="image avatar large"><img src="images/avatar.jpg" alt="" /></a>
-					<h1 class="intro"><strong>I am <span id="changing-word">creative</span></strong></h1>
-					<p class="subtitle">Driven. Designer. Developer. <span class="year">2026</span></p>
+				<div class="inner">
+					<a href="#" class="image avatar"><img src="images/avatar.jpg" alt="" /></a>
+					<h1><strong>I am <span id="changing-word">creative</span></strong></h1>
+					<p class="subtitle">Driven. Strategic. Designer. </p>
 				</div>
-			</header>
+				</header>
 
         <!-- Main -->
             <div id="main">
@@ -51,10 +60,9 @@ This portfolio is a collection of the different ways I express my ideas through 
                 <section id="two">
     <h2>Here are some of my projects!</h2>
     <div class="project-toggle" style="margin-bottom: 24px; text-align:center;">
-        <button id="show-coding" class="button primary" type="button">Coding</button>
+		<button id="show-coding" class="button" type="button">Coding</button>
         <button id="show-drawing" class="button" type="button">Drawing</button>
     </div>
-	<div id="projects-placeholder" style="text-align:center; margin:24px 0; color:#888;">Click a button above to view projects</div>
 	<div id="coding-projects" style="display: none;">
         <article class="col-12 work-item" style="margin-bottom: 24px;">
             <h3><a href="https://github.com/Cybertaco360/Thinkboard/tree/main" target="_blank">Thinkboard.</a></h3>
@@ -468,7 +476,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 					<li><a href="https://www.linkedin.com/in/dasha-turetska-507895317/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
 					<li><a href="mailto:dashaturetska@gmx.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 				</ul>
-				<p>&copy; Dasha Turetska - 2025</p>
+				<p>&copy; Dasha Turetska - 2026</p>
 			</div>
 		</footer>
 

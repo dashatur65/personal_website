@@ -121,80 +121,66 @@ document.addEventListener('DOMContentLoaded', function() {
 	var drawingBtn = document.getElementById('show-drawing');
 	var codingProjects = document.getElementById('coding-projects');
 	var drawingProjects = document.getElementById('drawing-projects');
-	var placeholder = document.getElementById('projects-placeholder');
-
-	function showNone() {
-		if (codingProjects) codingProjects.style.display = 'none';
-		if (drawingProjects) drawingProjects.style.display = 'none';
-		if (placeholder) placeholder.style.display = 'block';
-	}
-
-	function showCoding() {
-		if (codingProjects) codingProjects.style.display = 'block';
-		if (drawingProjects) drawingProjects.style.display = 'none';
-		if (placeholder) placeholder.style.display = 'none';
-		codingBtn.classList.add('primary');
-		drawingBtn.classList.remove('primary');
-	}
-
-	function showDrawing() {
-		if (codingProjects) codingProjects.style.display = 'none';
-		if (drawingProjects) drawingProjects.style.display = 'block';
-		if (placeholder) placeholder.style.display = 'none';
-		drawingBtn.classList.add('primary');
-		codingBtn.classList.remove('primary');
-	}
-
 	if (codingBtn && drawingBtn && codingProjects && drawingProjects) {
 		// start with none visible
-		showNone();
+		codingProjects.style.display = 'none';
+		drawingProjects.style.display = 'none';
 
-		codingBtn.addEventListener('click', showCoding);
-		drawingBtn.addEventListener('click', showDrawing);
+		codingBtn.addEventListener('click', function() {
+			codingProjects.style.display = 'block';
+			drawingProjects.style.display = 'none';
+			codingBtn.classList.add('primary');
+			drawingBtn.classList.remove('primary');
+		});
+
+		drawingBtn.addEventListener('click', function() {
+			codingProjects.style.display = 'none';
+			drawingProjects.style.display = 'block';
+			drawingBtn.classList.add('primary');
+			codingBtn.classList.remove('primary');
+		});
 	}
 
-	// Header-focused follower and avatar parallax
-	var headerEl = document.getElementById('header');
-	if (headerEl && !('ontouchstart' in window)) {
-		var follower = document.createElement('div');
-		follower.className = 'header-follower';
-		headerEl.style.position = 'relative';
-		headerEl.appendChild(follower);
+	// Cycle through words every 4 seconds
+	var words = ['creative', 'driven', 'strategic', 'designer'];
+	var currentWordIndex = 0;
+	var wordElement = document.getElementById('changing-word');
+	
+	if (wordElement) {
+		setInterval(function() {
+			currentWordIndex = (currentWordIndex + 1) % words.length;
+			wordElement.textContent = words[currentWordIndex];
+		}, 4000);
+	}
 
-		var mouseX = 0, mouseY = 0, posX = 0, posY = 0;
-
-		headerEl.addEventListener('mousemove', function(e) {
-			var r = headerEl.getBoundingClientRect();
-			mouseX = e.clientX - r.left;
-			mouseY = e.clientY - r.top;
-			follower.style.left = mouseX + 'px';
-			follower.style.top = mouseY + 'px';
-
-			// Parallax avatar
-			var img = headerEl.querySelector('.image.avatar img');
-			if (img) {
-				var cx = (mouseX / r.width - 0.5) * 12; // px
-				var cy = (mouseY / r.height - 0.5) * 12;
-				img.style.transform = 'translate(' + cx + 'px,' + cy + 'px) scale(1.02)';
+	// Add fade-in effect to sections on scroll
+	var sections = document.querySelectorAll('section');
+	var fadeInObserver = new IntersectionObserver(function(entries) {
+		entries.forEach(function(entry) {
+			if (entry.isIntersecting) {
+				entry.target.style.opacity = '1';
+				entry.target.style.transform = 'translateY(0)';
 			}
 		});
+	}, { threshold: 0.1 });
 
-		headerEl.addEventListener('mouseleave', function() {
-			follower.style.opacity = '0';
-			var img = headerEl.querySelector('.image.avatar img');
-			if (img) img.style.transform = '';
+	sections.forEach(function(section) {
+		section.style.opacity = '0';
+		section.style.transform = 'translateY(20px)';
+		section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+		fadeInObserver.observe(section);
+	});
+
+	// Add smooth button hover scale effect
+	var buttons = document.querySelectorAll('.button');
+	buttons.forEach(function(btn) {
+		btn.addEventListener('mouseenter', function() {
+			this.style.transform = 'scale(1.05)';
+			this.style.transition = 'transform 0.3s ease';
 		});
-
-		headerEl.addEventListener('mouseenter', function() {
-			follower.style.opacity = '0.95';
+		btn.addEventListener('mouseleave', function() {
+			this.style.transform = 'scale(1)';
 		});
-
-		(function animate() {
-			posX += (mouseX - posX) * 0.15;
-			posY += (mouseY - posY) * 0.15;
-			follower.style.transform = 'translate3d(' + (posX - mouseX) + 'px,' + (posY - mouseY) + 'px,0)';
-			requestAnimationFrame(animate);
-		})();
-	}
+	});
 
 });
