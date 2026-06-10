@@ -441,6 +441,33 @@ input, select, textarea {
 
 body.is-touch .header-follower { display: none; }
 
+/* Restore left sidebar header layout */
+#header {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 32%;
+	max-width: 420px;
+	height: 100vh;
+	overflow: auto;
+	background: linear-gradient(180deg, rgba(10,10,10,0.02), rgba(255,255,255,0.00));
+	padding: 2.5rem 1.5rem;
+	box-shadow: 2px 0 20px rgba(0,0,0,0.06);
+	z-index: 80;
+	display: flex;
+	align-items: center;
+}
+
+#main {
+	margin-left: 34%;
+	padding: 3rem 2rem;
+}
+
+@media screen and (max-width: 980px) {
+	#header { position: relative; width: 100%; height: auto; box-shadow: none; padding: 2rem 1rem; }
+	#main { margin-left: 0; padding: 2rem 1rem; }
+}
+
 /* Make buttons more obvious when active */
 .button.primary { box-shadow: 0 6px 18px rgba(73,191,157,0.12); }
 
