@@ -153,40 +153,48 @@ document.addEventListener('DOMContentLoaded', function() {
 		drawingBtn.addEventListener('click', showDrawing);
 	}
 
-	// Cursor follower (subtle)
-	if (!('ontouchstart' in window)) {
+	// Header-focused follower and avatar parallax
+	var headerEl = document.getElementById('header');
+	if (headerEl && !('ontouchstart' in window)) {
 		var follower = document.createElement('div');
-		follower.className = 'cursor-follower';
-		document.body.appendChild(follower);
+		follower.className = 'header-follower';
+		headerEl.style.position = 'relative';
+		headerEl.appendChild(follower);
 
 		var mouseX = 0, mouseY = 0, posX = 0, posY = 0;
 
-		window.addEventListener('mousemove', function(e) {
-			mouseX = e.clientX;
-			mouseY = e.clientY;
+		headerEl.addEventListener('mousemove', function(e) {
+			var r = headerEl.getBoundingClientRect();
+			mouseX = e.clientX - r.left;
+			mouseY = e.clientY - r.top;
 			follower.style.left = mouseX + 'px';
 			follower.style.top = mouseY + 'px';
+
+			// Parallax avatar
+			var img = headerEl.querySelector('.image.avatar img');
+			if (img) {
+				var cx = (mouseX / r.width - 0.5) * 12; // px
+				var cy = (mouseY / r.height - 0.5) * 12;
+				img.style.transform = 'translate(' + cx + 'px,' + cy + 'px) scale(1.02)';
+			}
 		});
 
-		// Reduce movement lag for smoother effect
+		headerEl.addEventListener('mouseleave', function() {
+			follower.style.opacity = '0';
+			var img = headerEl.querySelector('.image.avatar img');
+			if (img) img.style.transform = '';
+		});
+
+		headerEl.addEventListener('mouseenter', function() {
+			follower.style.opacity = '0.95';
+		});
+
 		(function animate() {
-			posX += (mouseX - posX) * 0.18;
-			posY += (mouseY - posY) * 0.18;
-			follower.style.transform = 'translate3d(' + (posX - mouseX) + 'px,' + (posY - mouseY) + 'px,0) scale(1)';
+			posX += (mouseX - posX) * 0.15;
+			posY += (mouseY - posY) * 0.15;
+			follower.style.transform = 'translate3d(' + (posX - mouseX) + 'px,' + (posY - mouseY) + 'px,0)';
 			requestAnimationFrame(animate);
 		})();
-
-		// Interactions - grow when hovering work items
-		document.querySelectorAll('.work-item').forEach(function(el) {
-			el.addEventListener('mouseenter', function() {
-				follower.style.transform += ' scale(1.25)';
-				follower.style.opacity = '1';
-			});
-			el.addEventListener('mouseleave', function() {
-				follower.style.transform = follower.style.transform.replace(' scale(1.25)','');
-				follower.style.opacity = '0.85';
-			});
-		});
 	}
 
 });
